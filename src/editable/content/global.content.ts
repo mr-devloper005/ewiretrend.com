@@ -22,7 +22,7 @@ export const globalContent = {
   },
   footer: {
     tagline: 'Newsroom updates and distributed media',
-    description: 'A flexible media distribution surface for announcements, press coverage, public updates, and dynamic news categories.',
+    description: 'A modern media distribution network for press releases, company announcements, newsroom coverage, and category-led public discovery.',
     columns: [
       {
         title: 'Explore',
@@ -41,7 +41,7 @@ export const globalContent = {
         ],
       },
     ],
-    bottomNote: 'Built for fast, flexible, and category-led media distribution.',
+    bottomNote: 'Built for fast, verified, and category-led media distribution.',
   },
   commonLabels: {
     readMore: 'Read more',

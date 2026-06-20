@@ -3,6 +3,9 @@
   --editorial-red: var(--slot4-accent-fill);
   --editorial-ink: var(--slot4-page-text);
   --editorial-paper: var(--slot4-surface-bg);
+  /* Fallbacks in case the inline body vars are not yet applied. */
+  --editable-container: 1280px;
+  --editable-border: rgba(17, 17, 17, 0.12);
 }
 
 html { scroll-behavior: smooth; }
@@ -14,49 +17,74 @@ body {
   font-feature-settings: "kern", "liga", "clig", "calt";
 }
 
-*::selection {
-  background: var(--editorial-red) !important;
-  color: #fff !important;
-  -webkit-text-fill-color: #fff;
-}
+/* ----------------------------------------------------------------------------
+   Text selection — high-contrast so highlighted text stays readable on every
+   background (white sections included).
 
+   Note: globals.css sets a faint `::selection { background: rgba(174,36,72,.18) }`
+   inside @layer base. We use LITERAL palette colors + !important (not a CSS var,
+   which can resolve empty for ::selection) so this always wins and stays visible.
+---------------------------------------------------------------------------- */
+::selection {
+  background: #a55b4b !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+*::selection {
+  background: #a55b4b !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+::-moz-selection {
+  background: #a55b4b !important;
+  color: #ffffff !important;
+}
 *::-moz-selection {
-  background: var(--editorial-red) !important;
-  color: #fff !important;
+  background: #a55b4b !important;
+  color: #ffffff !important;
 }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: #ebe7e1; }
-::-webkit-scrollbar-thumb { background: #171717; border: 2px solid #ebe7e1; }
+::-webkit-scrollbar-track { background: #efe3d6; }
+::-webkit-scrollbar-thumb { background: #210f37; border: 2px solid #efe3d6; }
 ::-webkit-scrollbar-thumb:hover { background: var(--editorial-red); }
 
-.editorial-brand,
-.editorial-serif {
-  font-family: Georgia, 'Times New Roman', serif;
-}
-
+/* ----------------------------------------------------------------------------
+   Brand + display type — heavy, condensed, uppercase (Drone-Media energy).
+---------------------------------------------------------------------------- */
 .editorial-brand {
-  font-style: italic;
-  letter-spacing: -0.065em;
+  font-family: ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+  font-style: normal;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+}
+.editorial-serif {
+  font-family: ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.035em;
 }
 
-.editorial-rule { border-color: color-mix(in srgb, var(--editorial-ink) 22%, transparent); }
+.editorial-rule { border-color: color-mix(in srgb, var(--editorial-ink) 18%, transparent); }
 
+/* ----------------------------------------------------------------------------
+   Long-form article body (detail pages).
+---------------------------------------------------------------------------- */
 .article-content {
-  color: #24211e;
+  color: #2a1b33;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(1.05rem, 1vw + .75rem, 1.25rem);
+  font-size: clamp(1.05rem, 1vw + .75rem, 1.22rem);
   line-height: 1.82;
 }
 
 .article-content > :first-child { margin-top: 0; }
-.article-content p { margin: 0 0 1.55em; }
+.article-content p { margin: 0 0 1.5em; }
 .article-content p:first-of-type::first-letter {
   float: left;
   margin: .08em .12em 0 0;
   color: var(--editorial-red);
   font-family: ui-sans-serif, system-ui, sans-serif;
-  font-size: 4.7em;
+  font-size: 4.6em;
   font-weight: 900;
   line-height: .72;
 }
@@ -64,22 +92,123 @@ body {
 .article-content h2,
 .article-content h3,
 .article-content h4 {
-  margin: 1.8em 0 .65em;
-  color: #111;
+  margin: 1.7em 0 .6em;
+  color: #210f37;
   font-family: ui-sans-serif, system-ui, sans-serif;
   font-weight: 900;
-  letter-spacing: -.045em;
+  letter-spacing: -.04em;
   line-height: 1.05;
 }
-.article-content h2 { font-size: clamp(1.8rem, 4vw, 3rem); }
-.article-content h3 { font-size: clamp(1.45rem, 3vw, 2.15rem); }
+.article-content h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); }
+.article-content h3 { font-size: clamp(1.4rem, 3vw, 2.05rem); }
 .article-content a { color: var(--editorial-red); font-weight: 700; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
-.article-content blockquote { margin: 2em 0; border-left: 7px solid var(--editorial-red); padding: .2em 0 .2em 1em; color: #111; font-size: 1.35em; font-weight: 700; line-height: 1.35; }
+.article-content blockquote { margin: 2em 0; border-left: 7px solid var(--editorial-red); padding: .2em 0 .2em 1em; color: #210f37; font-size: 1.3em; font-weight: 700; line-height: 1.35; }
 .article-content ul, .article-content ol { margin: 1.3em 0; padding-left: 1.4em; }
 .article-content li { margin: .5em 0; }
 .article-content img { width: 100%; margin: 2em 0; }
 
 input, textarea, select, button { border-radius: 0 !important; }
+
+/* ----------------------------------------------------------------------------
+   Animation system
+---------------------------------------------------------------------------- */
+
+/* Scroll reveal — elements tagged with [data-reveal] fade/slide in once visible.
+   The EditableMotion client layer adds `.reveal-in` via IntersectionObserver. */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity .7s cubic-bezier(.16, .84, .44, 1),
+    transform .7s cubic-bezier(.16, .84, .44, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+[data-reveal="left"]  { transform: translateX(-34px); }
+[data-reveal="right"] { transform: translateX(34px); }
+[data-reveal="zoom"]  { transform: scale(.93); }
+[data-reveal="fade"]  { transform: none; }
+[data-reveal].reveal-in { opacity: 1; transform: none; }
+
+/* Hero text reveal on load */
+@keyframes heroRise {
+  from { opacity: 0; transform: translateY(46px); }
+  to   { opacity: 1; transform: none; }
+}
+.hero-rise {
+  opacity: 0;
+  animation: heroRise .95s cubic-bezier(.16, .84, .44, 1) forwards;
+  animation-delay: var(--rise-delay, 0ms);
+}
+
+/* Reading progress bar (mounted by EditableMotion) */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  z-index: 70;
+  background: var(--slot4-accent-fill);
+  box-shadow: 0 0 12px rgba(165, 91, 75, .5);
+  transition: width .1s linear;
+}
+
+/* Underline-slide navigation */
+.nav-underline { position: relative; }
+.nav-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+  height: 2px;
+  width: 100%;
+  background: var(--slot4-accent-fill);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform .32s cubic-bezier(.16, .84, .44, 1);
+}
+.nav-underline:hover::after,
+.nav-underline[data-active="true"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Skeleton shimmer (loading states) */
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+.skeleton { position: relative; overflow: hidden; background: rgba(17, 17, 17, .07); }
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .65), transparent);
+  animation: shimmer 1.4s infinite;
+}
+
+/* Image zoom on hover */
+.zoom-frame { overflow: hidden; }
+.zoom-frame img { transition: transform .7s cubic-bezier(.16, .84, .44, 1); }
+.zoom-frame:hover img { transform: scale(1.06); }
+
+/* Card lift */
+.card-lift { transition: transform .35s cubic-bezier(.16, .84, .44, 1), box-shadow .35s ease, border-color .35s ease; }
+.card-lift:hover { transform: translateY(-6px); }
+
+/* Smooth page transition — gentle fade for every routed <main> */
+@keyframes pageFade { from { opacity: 0; } to { opacity: 1; } }
+main { animation: pageFade .45s ease both; }
+
+/* Floating hero accent blocks */
+@keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+.floaty { animation: floaty 5.5s ease-in-out infinite; }
+.floaty-slow { animation: floaty 8s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .hero-rise, main, .floaty, .floaty-slow { animation: none !important; opacity: 1 !important; }
+}
 
 @media (max-width: 640px) {
   .article-content { font-size: 1.05rem; line-height: 1.72; }
