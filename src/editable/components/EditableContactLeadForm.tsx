@@ -45,7 +45,7 @@ export function EditableContactLeadForm() {
       </div>
       <label className="mt-4 grid gap-2 text-sm font-black opacity-75">
         Message
-        <textarea name="message" required rows={6} placeholder="Tell us what you need help with..." className="border border-black bg-white px-4 py-3 text-base font-medium outline-none transition focus:border-[#c92f2f]" />
+        <textarea name="message" required rows={6} placeholder="Tell us what you need help with..." className="border border-black bg-white px-4 py-3 text-base font-medium outline-none transition focus:border-[var(--slot4-accent)]" />
       </label>
       <input name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
       {message ? (
@@ -54,7 +54,7 @@ export function EditableContactLeadForm() {
           <span>{message}</span>
         </div>
       ) : null}
-      <button type="submit" disabled={status === 'submitting'} className="mt-6 inline-flex h-[3.25rem] w-full items-center justify-center gap-2 border border-black bg-black px-6 text-xs font-black uppercase tracking-[0.24em] text-white transition hover:bg-[#c92f2f] disabled:cursor-not-allowed disabled:opacity-70">
+      <button type="submit" disabled={status === 'submitting'} className="mt-6 inline-flex h-[3.25rem] w-full items-center justify-center gap-2 border border-black bg-[var(--slot4-dark-bg)] px-6 text-xs font-black uppercase tracking-[0.24em] text-white transition hover:bg-[var(--slot4-accent)] disabled:cursor-not-allowed disabled:opacity-70">
         {status === 'submitting' ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
         Send message
       </button>
@@ -66,7 +66,7 @@ function Field({ name, label, type = 'text', placeholder, required = false }: { 
   return (
     <label className="grid gap-2 text-sm font-black opacity-75">
       {label}
-      <input name={name} type={type} required={required} placeholder={placeholder} className="h-[3.25rem] border border-black bg-white px-4 text-base font-medium outline-none transition focus:border-[#c92f2f]" />
+      <input name={name} type={type} required={required} placeholder={placeholder} className="h-[3.25rem] border border-black bg-white px-4 text-base font-medium outline-none transition focus:border-[var(--slot4-accent)]" />
     </label>
   )
 }
