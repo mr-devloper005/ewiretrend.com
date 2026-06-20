@@ -1,23 +1,33 @@
 import type { CSSProperties } from 'react'
 
 export const editableRootStyle = {
-  '--slot4-page-bg': '#f7f4ef',
-  '--slot4-page-text': '#111111',
-  '--slot4-panel-bg': '#efeae3',
-  '--slot4-surface-bg': '#fffdfa',
-  '--slot4-muted-text': '#514e49',
-  '--slot4-soft-muted-text': '#77716a',
-  '--slot4-accent': '#c92f2f',
-  '--slot4-accent-fill': '#c92f2f',
-  '--slot4-accent-soft': '#f3d8d3',
-  '--slot4-dark-bg': '#111111',
+  // Layout sizing — `--editable-container` was previously undefined, which made every
+  // `max-w-[var(--editable-container)]` block stretch full-bleed. Defining it here keeps
+  // the whole site at a comfortable, non-stretched reading width.
+  '--editable-container': '1280px',
+  '--editable-border': 'rgba(33,15,55,0.14)',
+  '--editable-page-bg': '#f7efe6',
+  '--editable-page-text': '#210f37',
+  // Palette: #210F37 deep purple · #4F1C51 purple · #A55B4B terracotta · #DCA06D gold
+  '--slot4-page-bg': '#f7efe6',
+  '--slot4-page-text': '#210f37',
+  '--slot4-panel-bg': '#efe3d6',
+  '--slot4-surface-bg': '#fffdfb',
+  '--slot4-muted-text': '#5b4a5a',
+  '--slot4-soft-muted-text': '#897a86',
+  '--slot4-accent': '#a55b4b',
+  '--slot4-accent-fill': '#a55b4b',
+  '--slot4-accent-soft': '#ead7cd',
+  '--slot4-accent-2': '#dca06d',
+  '--slot4-dark-bg': '#210f37',
+  '--slot4-dark-2': '#4f1c51',
   '--slot4-dark-text': '#ffffff',
-  '--slot4-media-bg': '#e4e0da',
-  '--slot4-cream': '#f7f4ef',
-  '--slot4-warm': '#fffdfa',
-  '--slot4-lavender': '#c92f2f',
-  '--slot4-gray': '#ece9e4',
-  '--slot4-body-gradient': 'linear-gradient(180deg, #f7f4ef 0%, #fffdfa 52%, #eeeae4 100%)',
+  '--slot4-media-bg': '#e7d8c9',
+  '--slot4-cream': '#f2e7da',
+  '--slot4-warm': '#fffdfb',
+  '--slot4-lavender': '#4f1c51',
+  '--slot4-gray': '#f2e7da',
+  '--slot4-body-gradient': 'linear-gradient(180deg, #f7efe6 0%, #f2e7da 100%)',
 } as CSSProperties
 
 export const editablePalette = {
